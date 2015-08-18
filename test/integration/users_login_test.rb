@@ -20,7 +20,8 @@ class UserLoginTest < ActionDispatch::IntegrationTest
     # get login page
     get login_path
     # post login credentials
-    post login_path, session: { email: @user.email, password: 'password' }
+    post login_path, session: { email: @user.email,
+                                password: 'password' }
     assert is_logged_in?
     assert_redirected_to @user
     # follow the previous redirect
@@ -43,7 +44,8 @@ class UserLoginTest < ActionDispatch::IntegrationTest
 
   test 'login with remembering' do
     log_in_as @user, remember_me: '1'
-    assert_not_nil cookies['remember_token']
+    assert_equal cookies['remember_token'],
+                 assigns(:user).remember_token
   end
 
   test 'login without remembering' do
